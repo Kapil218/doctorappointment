@@ -1,0 +1,147 @@
+/* Header Container */
+.container {
+  background-color: white;
+  border: 1px solid #1c4a2a;
+  padding: 1rem 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Wrapper */
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1500px;
+}
+
+.link_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Navigation Links */
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: #8c8c8c;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+
+.navLinks a:hover {
+  color: #1f5122;
+}
+
+.activeLink {
+  font-weight: bold;
+  color: #1c4a2a;
+}
+
+/* Buttons */
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.loginButton,
+.registerButton {
+  font-family: "Montserrat", sans-serif;
+  padding: 0.7rem 1.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.loginButton {
+  border: 1px solid gray;
+  background: white;
+}
+
+.registerButton {
+  background: #1c4a2a;
+  color: white;
+  border: none;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 0.3rem;
+  cursor: pointer;
+  /* position: relative; */
+  z-index: 1100;
+  padding: 0.2rem;
+}
+/* .hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: black;
+  transition: all 0.3s ease-in-out;
+} */
+
+/* Hamburger Animation */
+/* .hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+} */
+
+.navOpen {
+  display: flex !important;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background: white;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .buttonContainer {
+    display: none;
+  }
+
+  /* Show hamburger menu only on mobile */
+  .hamburger {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+  }
+}
+
+/* Tablet View (Show Buttons, Hide Hamburger) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .buttonContainer {
+    display: flex;
+  }
+
+  .hamburger {
+    display: none; /* Hide hamburger in tablet */
+  }
+}
