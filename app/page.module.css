@@ -1,3 +1,18 @@
 .container {
-  height: 300px;
+  padding: 0;
+  height: calc(100vh-75px);
+}
+
+.wrapper {
+  display: flex;
+}
+
+.hero_img,
+.hero_text {
+  width: 50%;
+}
+
+.hero_img img {
+  width: 100%;
+  height: calc(100vh-75px);
 }
