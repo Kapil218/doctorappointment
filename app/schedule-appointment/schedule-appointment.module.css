@@ -37,7 +37,8 @@
 
 .hero_img {
   position: relative;
-  background-image: url("./Mask group.svg");
+  background-image: url("../../public/mask-group.svg");
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

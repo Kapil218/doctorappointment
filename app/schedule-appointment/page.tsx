@@ -1,8 +1,7 @@
 import style from "./schedule-appointment.module.css";
 import React from "react";
-import Image from "next/image";
+
 import Footer from "@/components/footer/page";
-import AppointmentScheduler from "@/components/appointmentScheduler/page";
 
 export default function Home() {
   return (
