@@ -11,15 +11,9 @@ export default function form() {
         </p>
         <div className={style.form_fields_wrapper}>
           <form className={style.form_fields}>
-            <label htmlFor="role">Role</label>
-            <select name="role" id="role">
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
             <label htmlFor="name"> Name</label>
             <input type="text" name="name" id="name" />
-            <label htmlFor="phone"> Phone</label>
-            <input type="text" name="phone" id="phone" />
+
             <label htmlFor="email"> Email</label>
             <input type="email" name="email" id="email" />
             <label htmlFor="password"> Password</label>

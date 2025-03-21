@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import style from "./header.module.css";
+import Link from "next/link";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,19 +22,23 @@ export default function Header() {
 
           {/* Navigation Links */}
           <nav className={`${style.navLinks} ${menuOpen ? style.navOpen : ""}`}>
-            <a href="#" className={style.activeLink}>
+            <Link href="/" className={style.activeLink}>
               Home
-            </a>
-            <a href="#">Appointments</a>
-            <a href="#">Health Blog</a>
-            <a href="#">Reviews</a>
+            </Link>
+            <Link href="/appointments">Appointments</Link>
+            <Link href="/health-blog">Health Blog</Link>
+            <Link href="/reviews">Reviews</Link>
           </nav>
         </div>
 
         {/* Buttons */}
         <div className={style.buttonContainer}>
-          <button className={style.loginButton}>Login</button>
-          <button className={style.registerButton}>Register</button>
+          <Link href="/login">
+            <button className={style.loginButton}>Login</button>
+          </Link>
+          <Link href="/signup">
+            <button className={style.registerButton}>Register</button>
+          </Link>
         </div>
         {/* Hamburger Icon */}
         <button

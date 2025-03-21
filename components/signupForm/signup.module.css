@@ -2,12 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  padding: 2rem 0;
+  min-height: calc(100vh - 90px);
   background: url("../../public/Hero Image.svg") center/cover no-repeat;
 }
 
 .form_wrapper {
-  width: 550px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
@@ -45,7 +46,6 @@
   color: #8c8c8c;
 }
 
-.form_fields select,
 .form_fields input,
 .form_fields button {
   padding: 1rem 0.75rem;

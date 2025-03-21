@@ -1,6 +1,8 @@
-import style from "./page.module.css";
+import style from "./schedule-appointment.module.css";
 import React from "react";
 import Image from "next/image";
+import Footer from "@/components/footer/page";
+import AppointmentScheduler from "@/components/appointmentScheduler/page";
 
 export default function Home() {
   return (
@@ -8,24 +10,23 @@ export default function Home() {
       <main className={style.container}>
         <section className={style.wrapper}>
           <div className={style.hero_text}>
-            <h1>Health in Your Hands.</h1>
+            <h1>Book Your Next Doctor Visit in Seconds.</h1>
             <p>
-              Take control of your healthcare with CareMate. Book appointments
-              with ease, explore health blogs, and stay on top of your
-              well-being, all in one place.
+              CareMate helps you find the best healthcare provider by specialty,
+              location, and more, ensuring you get the care you need.
             </p>
-            <button>Get Started</button>
           </div>
           <div className={style.hero_img}>
-            <Image
-              src="./landingpage.svg"
+            {/* <Image
+              src="./Mask group.svg"
               alt="Img"
               width={1319}
               height={911}
               priority
-            ></Image>
+            ></Image> */}
           </div>
         </section>
+        <Footer />
       </main>
     </>
   );
