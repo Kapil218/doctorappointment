@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import style from "./appointmentScheduler.module.css"; // ✅ Ensure correct CSS module import
+import style from "./appointmentScheduler.module.css";
 
 export default function AppointmentScheduler() {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);

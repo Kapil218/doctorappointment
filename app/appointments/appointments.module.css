@@ -1,14 +1,29 @@
 .container {
-}
-
-.wrapper {
-  min-height: calc(100vh - 148px);
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
-/* .footer_div {
-  align-self: flex-end;
-} */
+.wrapper {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sidebar {
+  width: 25%;
+}
+
+.main {
+  width: 72%;
+}
