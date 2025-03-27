@@ -1,9 +1,19 @@
-import style from "./schedule-appointment.module.css";
-import React from "react";
+"use client";
 
+import style from "./schedule-appointment.module.css";
+import React, { useState } from "react";
+import BookingConfirmation from "@/components/confirmPage/page";
+// import Form from "@/components/form/page";
 import Footer from "@/components/footer/page";
 
 export default function Home() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  // Function to update selectedDate
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+  };
+
   return (
     <>
       <main className={style.container}>
@@ -15,15 +25,7 @@ export default function Home() {
               location, and more, ensuring you get the care you need.
             </p>
           </div>
-          <div className={style.hero_img}>
-            {/* <Image
-              src="./Mask group.svg"
-              alt="Img"
-              width={1319}
-              height={911}
-              priority
-            ></Image> */}
-          </div>
+          <div className={style.hero_img}>{/* <Form /> */}</div>
         </section>
         <Footer />
       </main>

@@ -1,5 +1,93 @@
-import React from "react";
-import Form from "@/components/loginForm/page";
-export default function login() {
-  return <Form />;
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import style from "./login.module.css";
+
+export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Login successful!");
+        router.push("/"); // Redirect user after successful login
+      } else {
+        alert(data.message || "Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={style.container}>
+      <div className={style.form_wrapper}>
+        <h2>Login</h2>
+        <p>
+          <span>Are you a new member?</span> Sign up here.
+        </p>
+        <div className={style.form_fields_wrapper}>
+          <form className={style.form_fields} onSubmit={handleLogin}>
+            <label htmlFor="email"> Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="password"> Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+            <button
+              type="reset"
+              onClick={() => {
+                setEmail("");
+                setPassword("");
+              }}
+            >
+              Reset
+            </button>
+            <p>Forgot password?</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }

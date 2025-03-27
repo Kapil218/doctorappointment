@@ -1,6 +1,7 @@
 import style from "./page.module.css";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link"; // ✅ Use Link instead of useRouter
 
 export default function Home() {
   return (
@@ -14,16 +15,19 @@ export default function Home() {
               with ease, explore health blogs, and stay on top of your
               well-being, all in one place.
             </p>
-            <button>Get Started</button>
+            {/* ✅ Use Link to navigate without client-side code */}
+            <Link href="/appointments">
+              <button>Get Started</button>
+            </Link>
           </div>
           <div className={style.hero_img}>
             <Image
-              src="./landingpage.svg"
+              src="/landingpage.svg" // ✅ Use absolute path for public images
               alt="Img"
               width={1319}
               height={911}
               priority
-            ></Image>
+            />
           </div>
         </section>
       </main>
