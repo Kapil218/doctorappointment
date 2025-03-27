@@ -27,6 +27,7 @@ export default function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include", // ✅ This ensures cookies sent from the backend are stored in the browser
       });
 
       const data = await response.json();

@@ -1,0 +1,47 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.headerText {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reviewCard {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #007bff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.comment {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: gray;
+  margin-top: 5px;
+}
