@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import style from "./signup.module.css";
+import Link from "next/link";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -36,7 +37,6 @@ export default function SignupForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registration successful! Redirecting to login...");
         router.push("/login"); // Redirect user after successful registration
       } else {
         alert(data.message || "Registration failed. Please try again.");
@@ -54,7 +54,10 @@ export default function SignupForm() {
       <div className={style.form_wrapper}>
         <h2>Sign Up</h2>
         <p>
-          <span>Already a member? </span> Login.
+          <span>Already a member? </span>
+          <Link href="/login" className={style.signup_link}>
+            Login.
+          </Link>
         </p>
         <div className={style.form_fields_wrapper}>
           <form className={style.form_fields} onSubmit={handleSignup}>

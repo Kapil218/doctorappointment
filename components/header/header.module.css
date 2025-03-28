@@ -1,13 +1,14 @@
 /* Header Container */
+/* Header Container */
 .container {
   background-color: white;
-  border: 1px solid #1c4a2a;
   padding: 1rem 2rem;
   position: sticky;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 🔹 Soft shadow instead of border */
 }
 
 /* Wrapper */

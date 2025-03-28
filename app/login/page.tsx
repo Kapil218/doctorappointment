@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import style from "./login.module.css";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,6 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Login successful!");
         router.push("/"); // Redirect user after successful login
       } else {
         alert(data.message || "Login failed. Please check your credentials.");
@@ -50,9 +50,13 @@ export default function LoginForm() {
     <div className={style.container}>
       <div className={style.form_wrapper}>
         <h2>Login</h2>
-        <p>
-          <span>Are you a new member?</span> Sign up here.
+        <p className={style.signup_text}>
+          Are you a new member?{" "}
+          <Link href="/signup" className={style.signup_link}>
+            Sign up here.
+          </Link>
         </p>
+
         <div className={style.form_fields_wrapper}>
           <form className={style.form_fields} onSubmit={handleLogin}>
             <label htmlFor="email"> Email</label>

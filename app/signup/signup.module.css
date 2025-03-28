@@ -26,13 +26,14 @@
 
 .form_wrapper p {
   font-size: 1rem;
-  font-weight: 500;
-  color: #1c4a2a;
+  font-weight: 400;
+  color: #8c8c8c;
 }
 
-.form_wrapper p span {
-  color: #8c8c8c;
-  font-weight: 400;
+.signup_link {
+  text-decoration: none;
+  color: #1c4a2a;
+  font-weight: 500;
 }
 
 .form_fields {

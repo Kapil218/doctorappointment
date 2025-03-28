@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./appointments.module.css"; // Ensure CSS is in the same directory
+import styles from "./appointments.module.css";
 import { useRouter } from "next/navigation";
 
 interface Doctor {
@@ -10,7 +10,7 @@ interface Doctor {
   degree: string;
   specialty: string;
   experience: number;
-  rating: number; // Changed from string to number
+  rating: number;
   image?: string;
 }
 
@@ -22,6 +22,7 @@ const DoctorsPage = () => {
     experience: "",
     gender: "",
   });
+  const [pendingFilters, setPendingFilters] = useState(filters);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -30,7 +31,16 @@ const DoctorsPage = () => {
     const fetchDoctors = async () => {
       const params = new URLSearchParams();
 
-      if (query.trim() !== "") params.append("query", query);
+      // Check if any filters are applied
+      const filtersApplied =
+        filters.rating || filters.experience || filters.gender;
+
+      if (query.trim() !== "") {
+        params.append("query", query);
+      } else if (!filtersApplied) {
+        params.append("topRated", "true"); // Only send if no search and no filters
+      }
+
       if (filters.rating) params.append("rating", filters.rating);
       if (filters.experience) params.append("experience", filters.experience);
       if (filters.gender) params.append("gender", filters.gender);
@@ -41,20 +51,28 @@ const DoctorsPage = () => {
       const res = await fetch(`http://localhost:3000/api/v1/doctors?${params}`);
       const data = await res.json();
 
-      console.log("sachin", data);
       if (data.statusCode === 200) {
-        console.log("kapil", data);
         setDoctors(data.data.doctors);
-        setTotalPages(data.data.pagination.totalPages);
+        setTotalPages(data.data.pagination?.totalPages || 1);
       }
     };
 
     fetchDoctors();
-  }, [query, JSON.stringify(filters), page]);
+  }, [query, filters, page]);
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    setPage(1); // Reset pagination when filters change
+  const handlePendingFilterChange = (key: string, value: string) => {
+    setPendingFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const applyFilters = () => {
+    setFilters(pendingFilters);
+    setPage(1);
+  };
+
+  const resetFilters = () => {
+    setPendingFilters({ rating: "", experience: "", gender: "" });
+    setFilters({ rating: "", experience: "", gender: "" });
+    setPage(1);
   };
 
   return (
@@ -67,7 +85,7 @@ const DoctorsPage = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button>Search</button>
+        <button onClick={() => setPage(1)}>Search</button>
       </div>
 
       {/* Header */}
@@ -80,12 +98,10 @@ const DoctorsPage = () => {
         {/* Sidebar Filters */}
         <aside className={styles.sidebar}>
           <h3>Filter By:</h3>
-          <button
-            onClick={() =>
-              setFilters({ rating: "", experience: "", gender: "" })
-            }
-          >
-            Reset
+
+          <button onClick={resetFilters}>Reset</button>
+          <button onClick={applyFilters} className={styles.applyButton}>
+            Apply
           </button>
 
           <div>
@@ -96,8 +112,8 @@ const DoctorsPage = () => {
                   type="radio"
                   name="rating"
                   value={r}
-                  checked={filters.rating === r}
-                  onChange={() => handleFilterChange("rating", r)}
+                  checked={pendingFilters.rating === r}
+                  onChange={() => handlePendingFilterChange("rating", r)}
                 />
                 {r ? `${r} star` : "Show all"}
               </label>
@@ -112,8 +128,8 @@ const DoctorsPage = () => {
                   type="radio"
                   name="experience"
                   value={exp}
-                  checked={filters.experience === exp}
-                  onChange={() => handleFilterChange("experience", exp)}
+                  checked={pendingFilters.experience === exp}
+                  onChange={() => handlePendingFilterChange("experience", exp)}
                 />
                 {exp ? `${exp} years` : "Show all"}
               </label>
@@ -128,8 +144,8 @@ const DoctorsPage = () => {
                   type="radio"
                   name="gender"
                   value={g}
-                  checked={filters.gender === g}
-                  onChange={() => handleFilterChange("gender", g)}
+                  checked={pendingFilters.gender === g}
+                  onChange={() => handlePendingFilterChange("gender", g)}
                 />
                 {g || "Show all"}
               </label>
