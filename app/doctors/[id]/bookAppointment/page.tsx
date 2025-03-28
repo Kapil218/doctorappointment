@@ -109,6 +109,7 @@ const AppointmentPage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(appointmentData),
+          credentials: "include",
         }
       );
 

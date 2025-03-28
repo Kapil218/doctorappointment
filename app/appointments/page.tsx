@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./appointments.module.css";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,7 @@ interface Doctor {
   degree: string;
   specialty: string;
   experience: number;
-  rating: number;
+  rating: string;
   image?: string;
 }
 
@@ -24,21 +24,34 @@ const DoctorsPage = () => {
   });
   const [pendingFilters, setPendingFilters] = useState(filters);
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       const params = new URLSearchParams();
 
-      // Check if any filters are applied
       const filtersApplied =
         filters.rating || filters.experience || filters.gender;
 
-      if (query.trim() !== "") {
-        params.append("query", query);
+      if (debouncedQuery.trim() !== "") {
+        params.append("query", debouncedQuery);
       } else if (!filtersApplied) {
-        params.append("topRated", "true"); // Only send if no search and no filters
+        params.append("topRated", "true");
       }
 
       if (filters.rating) params.append("rating", filters.rating);
@@ -48,17 +61,23 @@ const DoctorsPage = () => {
       params.append("page", page.toString());
       params.append("perPage", "6");
 
-      const res = await fetch(`http://localhost:3000/api/v1/doctors?${params}`);
-      const data = await res.json();
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/v1/doctors?${params}`
+        );
+        const data = await res.json();
 
-      if (data.statusCode === 200) {
-        setDoctors(data.data.doctors);
-        setTotalPages(data.data.pagination?.totalPages || 1);
+        if (data.statusCode === 200) {
+          setDoctors(data.data.doctors);
+          setTotalPages(data.data.pagination?.totalPages || 1);
+        }
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
       }
     };
 
     fetchDoctors();
-  }, [query, filters, page]);
+  }, [debouncedQuery, filters, page]);
 
   const handlePendingFilterChange = (key: string, value: string) => {
     setPendingFilters((prev) => ({ ...prev, [key]: value }));
@@ -77,7 +96,6 @@ const DoctorsPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* Search Bar */}
       <div className={styles.searchBar}>
         <input
           type="text"
@@ -85,24 +103,16 @@ const DoctorsPage = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button onClick={() => setPage(1)}>Search</button>
       </div>
 
-      {/* Header */}
       <h2 className={styles.header}>{doctors.length} doctors available</h2>
       <p className={styles.subHeader}>
         Book appointments with minimum wait-time & verified doctor details
       </p>
 
       <div className={styles.content}>
-        {/* Sidebar Filters */}
         <aside className={styles.sidebar}>
           <h3>Filter By:</h3>
-
-          <button onClick={resetFilters}>Reset</button>
-          <button onClick={applyFilters} className={styles.applyButton}>
-            Apply
-          </button>
 
           <div>
             <h4>Rating</h4>
@@ -151,9 +161,13 @@ const DoctorsPage = () => {
               </label>
             ))}
           </div>
+
+          <button onClick={resetFilters}>Reset</button>
+          <button onClick={applyFilters} className={styles.applyButton}>
+            Apply
+          </button>
         </aside>
 
-        {/* Doctor Cards */}
         <section className={styles.doctorsGrid}>
           {doctors.map((doctor) => (
             <div key={doctor.id} className={styles.card}>
@@ -164,7 +178,14 @@ const DoctorsPage = () => {
               <p>
                 🦷 {doctor.specialty} · {doctor.experience} Years
               </p>
-              <p>Ratings: {"⭐".repeat(doctor.rating)}</p>
+              <p>
+                Ratings: {doctor.rating} <br />
+                Ratings:{" "}
+                {doctor.rating && Number(doctor.rating) > 0
+                  ? "⭐".repeat(Math.round(Number(doctor.rating)))
+                  : "No ratings yet"}
+              </p>
+
               <button
                 onClick={() =>
                   router.push(`/doctors/${doctor.id}/bookAppointment`)
@@ -177,7 +198,6 @@ const DoctorsPage = () => {
         </section>
       </div>
 
-      {/* Pagination */}
       <div className={styles.pagination}>
         <button
           onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -185,16 +205,22 @@ const DoctorsPage = () => {
         >
           &lt; Prev
         </button>
-        {[...Array(totalPages)].slice(0, 5).map((_, index) => (
+
+        {Array.from(
+          { length: Math.min(totalPages, 5) },
+          (_, index) => index + 1
+        ).map((p) => (
           <button
-            key={index + 1}
-            onClick={() => setPage(index + 1)}
-            className={page === index + 1 ? styles.active : ""}
+            key={p}
+            onClick={() => setPage(p)}
+            className={page === p ? styles.active : ""}
           >
-            {index + 1}
+            {p}
           </button>
         ))}
+
         {totalPages > 5 && <span>...</span>}
+
         <button
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           disabled={page === totalPages}
