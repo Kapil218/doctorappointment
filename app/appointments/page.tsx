@@ -112,7 +112,19 @@ const DoctorsPage = () => {
 
       <div className={styles.content}>
         <aside className={styles.sidebar}>
-          <h3>Filter By:</h3>
+          <div className={styles.filterHeader}>
+            <div className={styles.filterTitle}>
+              <h3>Filter By:</h3>
+            </div>
+            <div className={styles.filterButtons}>
+              <span className={styles.resetButton} onClick={resetFilters}>
+                Reset
+              </span>
+              <span className={styles.applyButton} onClick={applyFilters}>
+                Apply
+              </span>
+            </div>
+          </div>
 
           <div>
             <h4>Rating</h4>
@@ -161,35 +173,50 @@ const DoctorsPage = () => {
               </label>
             ))}
           </div>
-
-          <button onClick={resetFilters}>Reset</button>
-          <button onClick={applyFilters} className={styles.applyButton}>
-            Apply
-          </button>
         </aside>
 
         <section className={styles.doctorsGrid}>
           {doctors.map((doctor) => (
-            <div key={doctor.id} className={styles.card}>
-              <img src={doctor.image || "/defaultpic.jpg"} alt={doctor.name} />
-              <h3>
+            <div key={doctor.id} className={styles.doctorCard}>
+              <img 
+                src={doctor.image || "/defaultpic.jpg"} 
+                alt={doctor.name}
+                className={styles.doctorImage}
+              />
+              <h3 className={styles.doctorName}>
                 {doctor.name}, {doctor.degree}
               </h3>
-              <p>
-                🦷 {doctor.specialty} · {doctor.experience} Years
-              </p>
-              <p>
-                Ratings: {doctor.rating} <br />
-                Ratings:{" "}
-                {doctor.rating && Number(doctor.rating) > 0
-                  ? "⭐".repeat(Math.round(Number(doctor.rating)))
-                  : "No ratings yet"}
-              </p>
-
+              <div className={styles.specialtyInfo}>
+                <svg 
+                  className={styles.specialtyIcon} 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                  <path d="M13 7h-2v5h5v-2h-3V7z"/>
+                </svg>
+                <span>{doctor.specialty}</span>
+                <span>·</span>
+                <span>{doctor.experience} Years</span>
+              </div>
+              <div className={styles.ratingsContainer}>
+                <div className={styles.ratingText}>
+                  Ratings:
+                </div>
+                <div className={styles.starRating}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star}>
+                      {star <= Number(doctor.rating) ? "★" : "☆"}
+                    </span>
+                  ))}
+                </div>
+              </div>
               <button
-                onClick={() =>
-                  router.push(`/doctors/${doctor.id}/bookAppointment`)
-                }
+                className={styles.bookButton}
+                onClick={() => router.push(`/doctors/${doctor.id}/bookAppointment`)}
               >
                 Book Appointment
               </button>
