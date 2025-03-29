@@ -127,34 +127,70 @@
   outline: none;
 }
 
-/* Date Selector */
+/* Month selector styles */
+.monthSelector {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 20px 0;
+}
+
+.currentMonth {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  min-width: 150px;
+  text-align: center;
+}
+
+/* Date selector styles */
 .dateSelector {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   overflow-x: auto;
-  padding: 10px 0;
-  white-space: nowrap;
+  padding: 0;
+  margin: 20px 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dateSelector::-webkit-scrollbar {
+  display: none;
 }
 
 .dateButton {
-  background: #f0f0f0;
-  padding: 8px 16px;
-  border-radius: 5px;
-  border: none;
+  min-width: 90px;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: white;
   cursor: pointer;
-  min-width: 60px;
-  text-align: center;
-  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dateButton .day {
+  font-size: 14px;
+  color: #666;
+}
+
+.dateButton .date {
+  font-size: 14px;
+  color: #1a1a1a;
 }
 
 .dateButton.selectedDate {
-  background-color: #0f4d2d;
-  color: white;
+  background: #0f4d2d;
+  border-color: #0f4d2d;
 }
 
-.dateButton:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
+.dateButton.selectedDate .day,
+.dateButton.selectedDate .date {
+  color: white;
 }
 
 /* Time Section */
@@ -183,6 +219,7 @@
 }
 
 .slotButton {
+  position: relative;
   padding: 10px 15px;
   border-radius: 5px;
   font-size: 14px;
@@ -213,4 +250,53 @@
   color: #888;
   font-size: 14px;
   margin-top: 10px;
+}
+
+.monthNav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #666;
+}
+
+.monthNav:hover {
+  color: #0f4d2d;
+}
+
+/* Tooltip styles */
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1;
+  margin-bottom: 5px;
+}
+
+/* Arrow for tooltip */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.slotButton.unavailable:hover .tooltip {
+  visibility: visible;
 }

@@ -22,6 +22,7 @@ const AppointmentPage = () => {
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const timeCategories = {
     morning: { label: "Morning", start: "09:00", end: "11:59" },
@@ -65,16 +66,33 @@ const AppointmentPage = () => {
 
   const generateDates = () => {
     const today = new Date();
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      return {
-        day: date.toLocaleString("en-US", { weekday: "short" }),
-        date: date.getDate(),
-        month: date.toLocaleString("en-US", { month: "short" }),
-        fullDate: date.toISOString().split("T")[0],
-      };
-    });
+    const selectedMonth = currentMonth.getMonth();
+    const selectedYear = currentMonth.getFullYear();
+    
+    // Get first and last day of selected month
+    const firstDay = new Date(selectedYear, selectedMonth, 1);
+    const lastDay = new Date(selectedYear, selectedMonth + 1, 0);
+    
+    const dates = [];
+    
+    // If selected month is current month, start from today
+    // Otherwise, start from first day of selected month
+    const startDate = selectedMonth === today.getMonth() && 
+                     selectedYear === today.getFullYear() 
+                     ? today 
+                     : firstDay;
+
+    // Generate dates from start date to last day of month
+    for (let d = new Date(startDate); d <= lastDay; d.setDate(d.getDate() + 1)) {
+      dates.push({
+        day: d.toLocaleString("en-US", { weekday: "short" }),
+        date: d.getDate(),
+        month: d.toLocaleString("en-US", { month: "short" }),
+        fullDate: d.toISOString().split("T")[0],
+      });
+    }
+    
+    return dates;
   };
 
   const handleBookAppointment = async () => {
@@ -130,6 +148,18 @@ const AppointmentPage = () => {
   };
 
   const availableDates = generateDates();
+
+  const handlePreviousMonth = () => {
+    const newDate = new Date(currentMonth);
+    newDate.setMonth(currentMonth.getMonth() - 1);
+    setCurrentMonth(newDate);
+  };
+
+  const handleNextMonth = () => {
+    const newDate = new Date(currentMonth);
+    newDate.setMonth(currentMonth.getMonth() + 1);
+    setCurrentMonth(newDate);
+  };
 
   useEffect(() => {
     async function fetchDoctor() {
@@ -232,6 +262,22 @@ const AppointmentPage = () => {
                 </div>
               )}
 
+            <div className={styles.monthSelector}>
+              <button onClick={handlePreviousMonth} className={styles.monthNav}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M15 18l-6-6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <span className={styles.currentMonth}>
+                {currentMonth.toLocaleString("en-US", { month: "long", year: "numeric" })}
+              </span>
+              <button onClick={handleNextMonth} className={styles.monthNav}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M9 18l6-6-6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+             <br />
             <div className={styles.dateSelector}>
               {availableDates.map((d) => {
                 const hasSlots =
@@ -244,13 +290,12 @@ const AppointmentPage = () => {
                   <button
                     key={d.fullDate}
                     className={`${styles.dateButton} ${
-                      selectedDate === d.fullDate ? styles.selectedDate : ""
+                      selectedDate === d.fullDate ? styles.selectedDate : ''
                     }`}
                     onClick={() => setSelectedDate(d.fullDate)}
                     disabled={!hasSlots}
                   >
                     <span className={styles.day}>{d.day}</span>
-                    <br />
                     <span className={styles.date}>
                       {d.date} {d.month}
                     </span>
@@ -283,24 +328,21 @@ const AppointmentPage = () => {
                           </div>
 
                           <div className={styles.slotContainer}>
-                            {slots.map(({ time, available }) => (
+                            {slots.map((slot) => (
                               <button
-                                key={time}
+                                key={slot.time}
                                 className={`${styles.slotButton} ${
-                                  selectedTime === time
-                                    ? styles.selectedTime
-                                    : ""
-                                } ${
-                                  !available
-                                    ? styles.greyedOut
-                                    : styles.availableSlot
-                                }`}
-                                onClick={() =>
-                                  available && setSelectedTime(time)
-                                }
-                                disabled={!available}
+                                  slot.available ? styles.available : styles.unavailable
+                                } ${selectedTime === slot.time ? styles.selectedTime : ''}`}
+                                onClick={() => slot.available && setSelectedTime(slot.time)}
+                                disabled={!slot.available}
                               >
-                                {convertTo12HourFormat(time)}
+                                {slot.time}
+                                {!slot.available && (
+                                  <span className={styles.tooltip}>
+                                    {slot.isBooked ? "Already Booked" : "Not Available"}
+                                  </span>
+                                )}
                               </button>
                             ))}
                           </div>
