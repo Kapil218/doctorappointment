@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "./appointment2.module.css";
-import Footer from "@/components/footer/page";
 
 interface Doctor {
   name: string;
@@ -149,16 +148,43 @@ const AppointmentPage = () => {
 
   const availableDates = generateDates();
 
+  const isBeforeCurrentMonth = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getFullYear() < today.getFullYear() ||
+      (date.getFullYear() === today.getFullYear() && 
+       date.getMonth() < today.getMonth())
+    );
+  };
+
   const handlePreviousMonth = () => {
     const newDate = new Date(currentMonth);
     newDate.setMonth(currentMonth.getMonth() - 1);
-    setCurrentMonth(newDate);
+    
+    if (!isBeforeCurrentMonth(newDate)) {
+      setCurrentMonth(newDate);
+    }
   };
 
   const handleNextMonth = () => {
     const newDate = new Date(currentMonth);
     newDate.setMonth(currentMonth.getMonth() + 1);
     setCurrentMonth(newDate);
+  };
+
+  const handleDateScroll = () => {
+    const dateSelector = document.querySelector(`.${styles.dateSelector}`);
+    if (dateSelector) {
+      // Scroll by the width of 3 date buttons (including gap)
+      dateSelector.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
+  const handleBackScroll = () => {
+    const dateSelector = document.querySelector(`.${styles.dateSelector}`);
+    if (dateSelector) {
+      dateSelector.scrollBy({ left: -300, behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
@@ -242,28 +268,31 @@ const AppointmentPage = () => {
               </button>
             </div>
 
-            {/* Location Dropdown for Hospital Visit */}
-            {selectedTab === "hospital" &&
-              doctorData &&
-              doctorData.location && (
-                <div className={styles.locationDropdown}>
-                  <select
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    value={selectedLocation}
-                    className={styles.selectBox}
+            {/* Only show location when hospital visit is selected */}
+            {selectedTab === "hospital" && (
+              <div className={styles.locationSelector}>
+                <div className={styles.locationDisplay}>
+                  <span>MedicareHeart Institute, Okhla Road</span>
+                  <svg 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor"
+                    className={styles.chevronIcon}
                   >
-                    <option
-                      key={doctorData.location}
-                      value={doctorData.location}
-                    >
-                      {doctorData.location}
-                    </option>
-                  </select>
+                    <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </div>
-              )}
+              </div>
+            )}
 
             <div className={styles.monthSelector}>
-              <button onClick={handlePreviousMonth} className={styles.monthNav}>
+              <button 
+                onClick={handlePreviousMonth} 
+                className={styles.monthNav}
+                disabled={isBeforeCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+              >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path d="M15 18l-6-6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -277,86 +306,118 @@ const AppointmentPage = () => {
                 </svg>
               </button>
             </div>
-             <br />
-            <div className={styles.dateSelector}>
-              {availableDates.map((d) => {
-                const hasSlots =
-                  doctorData?.available_times?.[d.fullDate] &&
-                  Object.values(doctorData.available_times[d.fullDate]).some(
-                    (slots) => slots.length > 0
-                  );
 
-                return (
-                  <button
-                    key={d.fullDate}
-                    className={`${styles.dateButton} ${
-                      selectedDate === d.fullDate ? styles.selectedDate : ''
-                    }`}
-                    onClick={() => setSelectedDate(d.fullDate)}
-                    disabled={!hasSlots}
-                  >
-                    <span className={styles.day}>{d.day}</span>
-                    <span className={styles.date}>
-                      {d.date} {d.month}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className={styles.dateScrollContainer}>
+              <button 
+                className={styles.dateScrollButton}
+                onClick={handleBackScroll}
+              >
+                <svg 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <div className={styles.dateSelector}>
+                {availableDates.map((d) => {
+                  const hasSlots =
+                    doctorData?.available_times?.[d.fullDate] &&
+                    Object.values(doctorData.available_times[d.fullDate]).some(
+                      (slots) => slots.length > 0
+                    );
+
+                  return (
+                    <button
+                      key={d.fullDate}
+                      className={`${styles.dateButton} ${
+                        selectedDate === d.fullDate ? styles.selectedDate : ''
+                      } ${!hasSlots ? styles.unavailableDate : ''}`}
+                      onClick={() => setSelectedDate(d.fullDate)}
+                    >
+                      <span className={styles.day}>{d.day}</span>
+                      <span className={styles.date}>
+                        {d.date} {d.month}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <button 
+                className={styles.dateScrollButton}
+                onClick={handleDateScroll}
+              >
+                <svg 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
             </div>
 
-            {selectedDate && doctorData?.available_times?.[selectedDate] ? (
-              Object.entries(timeCategories).map(
-                ([key, { label, start, end }]) => {
-                  const slots = getFilteredSlots(
-                    doctorData.available_times[selectedDate]?.[key] || [],
-                    start,
-                    end
-                  );
-                  return (
-                    <div key={key} className={styles.timeSection}>
-                      {slots.length > 0 && (
-                        <>
-                          <div className={styles.timeHeader}>
-                            <span>{label}</span>
-                            <span className={styles.slotCount}>
-                              {
-                                slots.filter(({ available }) => available)
-                                  .length
-                              }{" "}
-                              Slots
-                            </span>
-                          </div>
-
-                          <div className={styles.slotContainer}>
-                            {slots.map((slot) => (
-                              <button
-                                key={slot.time}
-                                className={`${styles.slotButton} ${
-                                  slot.available ? styles.available : styles.unavailable
-                                } ${selectedTime === slot.time ? styles.selectedTime : ''}`}
-                                onClick={() => slot.available && setSelectedTime(slot.time)}
-                                disabled={!slot.available}
-                              >
-                                {slot.time}
-                                {!slot.available && (
-                                  <span className={styles.tooltip}>
-                                    {slot.isBooked ? "Already Booked" : "Not Available"}
-                                  </span>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  );
-                }
-              )
-            ) : (
-              <p className={styles.noSlotsMessage}>
-                No available slots for this date.
-              </p>
-            )}
+            <div className={styles.slotsContainer}>
+              {selectedDate ? (
+                doctorData?.available_times?.[selectedDate] ? (
+                  Object.entries(timeCategories).map(([key, { label, start, end }]) => {
+                    const slots = getFilteredSlots(
+                      doctorData.available_times[selectedDate]?.[key] || [],
+                      start,
+                      end
+                    );
+                    return (
+                      <div key={key} className={styles.timeSection}>
+                        {slots.length > 0 && (
+                          <>
+                            <div className={styles.timeHeader}>
+                              <span>{label}</span>
+                              <span className={styles.slotCount}>
+                                {slots.filter(({ available }) => available).length} Slots
+                              </span>
+                            </div>
+                            <div className={styles.slotContainer}>
+                              {slots.map((slot) => (
+                                <button
+                                  key={slot.time}
+                                  className={`${styles.slotButton} ${
+                                    slot.available ? styles.available : styles.unavailable
+                                  } ${selectedTime === slot.time ? styles.selectedTime : ''}`}
+                                  onClick={() => slot.available && setSelectedTime(slot.time)}
+                                  disabled={!slot.available}
+                                >
+                                  {convertTo12HourFormat(slot.time)}
+                                  {!slot.available && (
+                                    <span className={styles.tooltip}>Not Available</span>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className={styles.noAvailabilityMessage}>
+                    Doctor not available on this date
+                  </div>
+                )
+              ) : (
+                <p className={styles.noSlotsMessage}>Please select a date</p>
+              )}
+            </div>
 
             <button className={styles.nextButton} disabled={!selectedTime}>
               Next
@@ -364,7 +425,6 @@ const AppointmentPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 };

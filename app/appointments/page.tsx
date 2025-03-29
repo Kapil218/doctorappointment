@@ -182,6 +182,7 @@ const DoctorsPage = () => {
                 src={doctor.image || "/defaultpic.jpg"} 
                 alt={doctor.name}
                 className={styles.doctorImage}
+                onClick={() => router.push(`/doctors/${doctor.id}`)}
               />
               <h3 className={styles.doctorName}>
                 {doctor.name}, {doctor.degree}
@@ -216,7 +217,7 @@ const DoctorsPage = () => {
               </div>
               <button
                 className={styles.bookButton}
-                onClick={() => router.push(`/doctors/${doctor.id}/bookAppointment`)}
+                onClick={() => router.push(`/schedule-appointment/${doctor.id}`)}
               >
                 Book Appointment
               </button>
