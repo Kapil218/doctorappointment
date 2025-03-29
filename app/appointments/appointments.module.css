@@ -1,7 +1,8 @@
 .container {
+  width: 100%;
   max-width: 1200px;
-  margin: auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 .searchBar {

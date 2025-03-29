@@ -1,28 +1,28 @@
 /* Header Container */
-/* Header Container */
 .container {
   background-color: white;
   padding: 1rem 2rem;
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 🔹 Soft shadow instead of border */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Wrapper */
 .wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1500px;
+  position: relative;
 }
 
 .link_wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 2rem;
 }
 
@@ -38,30 +38,32 @@
   font-size: 1rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .navLinks a:hover {
-  color: #1f5122;
+  color: #1c4a2a;
 }
 
-.activeLink {
-  font-weight: bold;
+.navLinks a.activeLink {
   color: #1c4a2a;
+  font-weight: 600;
 }
 
 /* Buttons */
 .buttonContainer {
   display: flex;
   gap: 1rem;
-  padding: 0.5rem;
 }
 
 .loginButton,
-.registerButton {
+.registerButton,
+.logoutButton {
   font-family: "Montserrat", sans-serif;
   padding: 0.7rem 1.5rem;
   border-radius: 0.4rem;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .loginButton {
@@ -75,74 +77,176 @@
   border: none;
 }
 
-/* Hamburger Menu */
+.logoutButton {
+  border: 1px solid #1c4a2a;
+  background-color: transparent;
+  color: #1c4a2a;
+  transition: all 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #1c4a2a;
+  color: white;
+}
+
+/* Update Mobile Menu styles */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 998;
+}
+
+.overlay.active {
+  opacity: 1;
+  display: block;
+}
+
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -280px; /* Start off-screen */
+  width: 280px;
+  height: 100vh;
+  background: white;
+  padding: 6rem 2rem 2rem;
+  box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.mobileMenu.active {
+  right: 0;
+  display: block;
+}
+
+/* Hamburger Icon */
 .hamburger {
   display: none;
-  flex-direction: column;
-  gap: 0.3rem;
+  background: none;
+  border: none;
   cursor: pointer;
-  /* position: relative; */
-  z-index: 1100;
-  padding: 0.2rem;
+  padding: 5px;
+  z-index: 10;
+  width: 30px;
+  height: 20px;
+  position: relative;
 }
-/* .hamburger span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: black;
-  transition: all 0.3s ease-in-out;
-} */
 
-/* Hamburger Animation */
-/* .hamburger.active span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+.hamburger span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #1c4a2a;
+  border-radius: 2px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
 }
+
+/* Position the three lines */
+.hamburger span:nth-child(1) {
+  top: 0px;
+}
+
+.hamburger span:nth-child(2) {
+  top: 9px;
+}
+
+.hamburger span:nth-child(3) {
+  top: 18px;
+}
+
+/* Animate to X when menu is open */
+.hamburger.active span:nth-child(1) {
+  top: 9px;
+  transform: rotate(45deg);
+}
+
 .hamburger.active span:nth-child(2) {
   opacity: 0;
+  width: 0%;
 }
+
 .hamburger.active span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-} */
-
-.navOpen {
-  display: flex !important;
+  top: 9px;
+  transform: rotate(-45deg);
 }
 
-/* Mobile View */
+/* Media Queries */
+@media (max-width: 1024px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .link_wrapper {
+    gap: 1rem;
+  }
+  
+  .navLinks {
+    gap: 1rem;
+  }
+  
+  .loginButton,
+  .registerButton,
+  .logoutButton {
+    padding: 0.5rem 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navLinks {
     display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    background: white;
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-
+  
   .buttonContainer {
     display: none;
   }
-
-  /* Show hamburger menu only on mobile */
+  
   .hamburger {
-    display: flex;
-    position: absolute;
-    right: 20px;
-    top: 15px;
+    display: block;
   }
-}
-
-/* Tablet View (Show Buttons, Hide Hamburger) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .buttonContainer {
-    display: flex;
+  
+  .mobileMenu {
+    display: block;
   }
-
-  .hamburger {
-    display: none; /* Hide hamburger in tablet */
+  
+  .mobileMenu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .mobileMenu a {
+    color: #8c8c8c;
+    text-decoration: none;
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+  }
+  
+  .mobileMenu a:hover {
+    color: #1c4a2a;
+  }
+  
+  .mobileMenu .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+  
+  .mobileMenu button {
+    width: 100%;
   }
 }
