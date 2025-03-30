@@ -14,6 +14,7 @@ interface Doctor {
   image?: string;
 }
 
+
 const DoctorsPage = () => {
   const router = useRouter();
   const [doctors, setDoctors] = useState<Doctor[]>([]);

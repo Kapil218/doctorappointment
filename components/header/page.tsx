@@ -28,7 +28,7 @@ export default function Header() {
     return pathname === path ? style.activeLink : "";
   };
 
-  const isLoggedIn = true; // Replace with actual auth check
+  const isLoggedIn = false;
 
   const NavLinks = () => (
     <>
