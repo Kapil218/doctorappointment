@@ -16,7 +16,7 @@ export default function HomePage() {
         <p className={styles.description}>
           Take control of your healthcare with CareMate. Book appointments with ease, explore health blogs, and stay on top of your well-being, all in one place.
         </p>
-        <Link href="/doctors">
+        <Link href="/appointments">
           <button className={styles.getStartedButton}>
             Get Started
           </button>
