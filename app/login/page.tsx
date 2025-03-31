@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import style from "./login.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -43,6 +44,14 @@ export default function LoginForm() {
       alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      window.location.href = "http://localhost:3000/api/v1/users/login/google";
+    } catch (error) {
+      console.error("Google login failed:", error);
     }
   };
 
@@ -92,6 +101,23 @@ export default function LoginForm() {
             <p>Forgot password?</p>
           </form>
         </div>
+
+        <div className={style.divider}>
+          <span>OR</span>
+        </div>
+
+        <button 
+          onClick={handleGoogleLogin}
+          className={style.googleButton}
+        >
+          <Image
+            src="/google-icon.svg" // Make sure to add this image to your public folder
+            alt="Google"
+            width={20}
+            height={20}
+          />
+          <span>Continue with Google</span>
+        </button>
       </div>
     </div>
   );
