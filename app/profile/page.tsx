@@ -42,11 +42,11 @@ export default function UserProfile() {
           })
         ]);
 
-        if (!profileRes.ok) throw new Error("Failed to fetch user profile");
-        if (!appointmentsRes.ok) throw new Error("Failed to fetch appointments");
+       
 
         const profileData = await profileRes.json();
         const appointmentsData = await appointmentsRes.json();
+console.log(appointmentsData,profileData);
 
         setUserInfo(profileData.data);
         setAppointments(appointmentsData.data);

@@ -3,45 +3,54 @@ import React, { useState } from "react";
 import Image from "next/image";
 import style from "./header.module.css";
 import Link from "next/link";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Header() {
+interface HeaderProps {
+  isLoggedIn: boolean;
+}
+
+export default function Header({ isLoggedIn }: HeaderProps) {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+
+  const isActive = (path: string) => (pathname === path ? style.activeLink : "");
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/v1/users/logout", {
+      const response = await fetch("http://localhost:3000/api/v1/users/logout", {
         method: "POST",
-        credentials: "include",
+        credentials: "include", // Ensures cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-
-      if (!res.ok) throw new Error("Failed to log out");
-      router.push("/login");
+  
+      if (response.ok) {
+        window.location.href = "/login";
+     
+        router.refresh(); // ✅ Ensures UI updates properly
+      } else {
+        console.error("Logout failed");
+      }
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error("Error logging out:", error);
     }
   };
-
-  const isActive = (path: string) => {
-    return pathname === path ? style.activeLink : "";
-  };
-
-  const isLoggedIn = false;
+  
 
   const NavLinks = () => (
     <>
-      <Link href="/" className={isActive('/')}>
+      <Link href="/" className={isActive("/")}>
         Home
       </Link>
-      <Link href="/appointments" className={isActive('/appointments')}>
+      <Link href="/appointments" className={isActive("/appointments")}>
         Appointments
       </Link>
-      <Link href="/health-blog" className={isActive('/health-blog')}>
+      <Link href="/health-blog" className={isActive("/health-blog")}>
         Health Blog
       </Link>
-      <Link href="/reviews" className={isActive('/reviews')}>
+      <Link href="/reviews" className={isActive("/reviews")}>
         Reviews
       </Link>
     </>
@@ -50,9 +59,11 @@ export default function Header() {
   const AuthButtons = () => (
     <>
       {isLoggedIn ? (
+        <>
         <button onClick={handleLogout} className={style.logoutButton}>
           Logout
         </button>
+        <button className={style.logoutButton} onClick={() => router.push("/profile")}>Profile</button></>
       ) : (
         <>
           <Link href="/login">
@@ -87,7 +98,7 @@ export default function Header() {
         </div>
 
         <button
-          className={`${style.hamburger} ${menuOpen ? style.active : ''}`}
+          className={`${style.hamburger} ${menuOpen ? style.active : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -96,7 +107,7 @@ export default function Header() {
           <span></span>
         </button>
 
-        <div className={`${style.mobileMenu} ${menuOpen ? style.active : ''}`}>
+        <div className={`${style.mobileMenu} ${menuOpen ? style.active : ""}`}>
           <NavLinks />
           <div className={style.buttonContainer}>
             <AuthButtons />
