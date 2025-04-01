@@ -1,9 +1,0 @@
-{
-  "hosting": {
-    "public": "out",
-    "cleanUrls": true,
-    "rewrites": [
-      { "source": "**", "destination": "/index.html" }
-    ]
-  }
-}
