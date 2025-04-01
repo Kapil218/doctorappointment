@@ -127,7 +127,7 @@ export default function Header({ isLoggedIn }: HeaderProps) {
         <div className={style.link_wrapper}>
           <Link href="/">
             <Image
-              src="/logo.svg"
+              src="/Logo.svg"
               alt="MedCare Logo"
               width={191}
               height={56}
