@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./appointments.module.css";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 interface Doctor {
   id: string;
@@ -348,9 +349,11 @@ const DoctorsPage = () => {
         <section className={styles.doctorsGrid}>
           {doctors.map((doctor) => (
             <div key={doctor.id} className={styles.doctorCard}>
-              <img 
-                src={doctor.image || "/defaultpic.jpg"} 
+              <Image 
+                src={doctor.image || '/defaultpic.jpg'} 
                 alt={doctor.name}
+                width={100}
+                height={100}
                 className={styles.doctorImage}
                 onClick={() => router.push(`/doctors/${doctor.id}`)}
               />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import styles from "./doctorPage.module.css";
+import Image from 'next/image';
 
 interface Doctor {
   id: string;
@@ -100,9 +101,11 @@ const DoctorProfile = () => {
 
       <div className={styles.profileSection}>
         <div className={styles.leftColumn}>
-          <img
-            src={doctor?.image || "/defaultpic.jpg"}
+          <Image 
+            src={doctor?.image || '/defaultpic.jpg'} 
             alt={doctor?.name || "Doctor"}
+            width={200}
+            height={200}
             className={styles.profileImage}
           />
         </div>

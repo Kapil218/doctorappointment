@@ -37,10 +37,10 @@
   max-width: 60%;
 }
 
-.hero_img {
+.schedule-appointment_hero_img__QGR5v {
   position: relative;
   width: 50%;
-  background-image: url("@/public/mask-group.svg");
+  background-image: url('/mask-group.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -129,7 +129,7 @@
   }
 
   .hero_text,
-  .hero_img {
+  .schedule-appointment_hero_img__QGR5v {
     width: 100%;
     min-height: 300px;
   }
@@ -152,7 +152,7 @@
     font-size: 1rem;
   }
 
-  .hero_img {
+  .schedule-appointment_hero_img__QGR5v {
     padding: 2rem 0;
     min-height: 600px;
   }
@@ -190,7 +190,7 @@
     font-size: 0.95rem;
   }
 
-  .hero_img {
+  .schedule-appointment_hero_img__QGR5v {
     min-height: auto;
     padding: 1.5rem 0;
   }

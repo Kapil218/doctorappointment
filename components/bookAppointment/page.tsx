@@ -19,7 +19,6 @@ const AppointmentPage = () => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [selectedTab, setSelectedTab] = useState<"video" | "hospital">("video");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -191,7 +190,7 @@ const AppointmentPage = () => {
     async function fetchDoctor() {
       if (!id) return;
       try {
-        setLoading(true);
+      
         const response = await fetch(
           `http://localhost:3000/api/v1/doctors/${id}`
         );
@@ -208,10 +207,10 @@ const AppointmentPage = () => {
 
         setSelectedLocation(fetchData.data.location || "");
 
-        setLoading(false);
+     
       } catch (error) {
         console.error("Error fetching doctor:", error);
-        setLoading(false);
+     
       }
     }
     fetchDoctor();
@@ -229,7 +228,7 @@ const AppointmentPage = () => {
     );
 
     setSelectedDate(firstAvailableDate ? firstAvailableDate.fullDate : "");
-  }, [doctorData]);
+  }, [doctorData, availableDates]);
 
   return (
     <>

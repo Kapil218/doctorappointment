@@ -55,7 +55,7 @@ const BookingConfirmation = () => {
     }
     fetching();
   }, []);
-  //@ts-ignore
+  //@ts-expect-error - Type mismatch expected
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPatientInfo((prev) => ({
@@ -90,22 +90,6 @@ const BookingConfirmation = () => {
       );
     }
   };
-
-  async function handleSubmitbtn() {
-    const response = await (
-      await fetch("http://localhost:8080/api/appointments/book", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-
-          //   'authorization':Bearer ${localStorage.getItem('token')}
-        },
-        method: "PUT",
-        body: JSON.stringify({ userInfo: JSON.stringify(patientInfo) }),
-        credentials: "include",
-      })
-    ).json();
-  }
 
   return (
     <>

@@ -101,7 +101,6 @@ export default function ReviewsPage() {
         throw new Error(errorData?.message || 'Failed to submit review');
       }
 
-      const data = await res.json();
       setIsModalOpen(false);
       setRating(0);
       setReviewText('');
@@ -171,7 +170,7 @@ export default function ReviewsPage() {
                   ))}
                 </div>
               </div>
-              <p className={styles.reviewText}>"{review.review}"</p>
+              <p className={styles.reviewText}>&ldquo;{review.review}&rdquo;</p>
               <p className={styles.reviewDate}>
                 {new Date(review.created_at).toLocaleDateString()}
               </p>
