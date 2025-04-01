@@ -12,7 +12,6 @@
 
 /* Wrapper */
 .wrapper {
-
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -36,7 +35,7 @@
   text-decoration: none;
   color: #8c8c8c;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+
   font-weight: 500;
   transition: color 0.2s ease;
 }
@@ -59,7 +58,6 @@
 .loginButton,
 .registerButton,
 .logoutButton {
-  font-family: "Montserrat", sans-serif;
   padding: 0.7rem 1.5rem;
   border-radius: 0.4rem;
   cursor: pointer;
@@ -135,7 +133,7 @@
   opacity: 1;
   left: 0;
   transform: rotate(0deg);
-  transition: .25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 
 /* Position the three lines */
@@ -172,15 +170,15 @@
   .container {
     padding: 1rem;
   }
-  
+
   .link_wrapper {
     gap: 1rem;
   }
-  
+
   .navLinks {
     gap: 1rem;
   }
-  
+
   .loginButton,
   .registerButton,
   .logoutButton {
@@ -192,15 +190,15 @@
   .navLinks {
     display: none;
   }
-  
+
   .buttonContainer {
     display: none;
   }
-  
+
   .hamburger {
     display: block;
   }
-  
+
   .mobileMenu {
     display: flex;
     flex-direction: column;
@@ -211,13 +209,13 @@
     visibility: hidden;
     transition: all 0.3s ease-in-out;
   }
-  
+
   .mobileMenu.active {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
   }
-  
+
   .mobileMenu a {
     color: #8c8c8c;
     text-decoration: none;
@@ -226,14 +224,14 @@
     text-align: center;
     font-size: 1.1rem;
   }
-  
+
   .mobileMenu .buttonContainer {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 0.5rem;
   }
-  
+
   .mobileMenu button {
     width: 100%;
   }

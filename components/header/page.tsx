@@ -47,11 +47,11 @@ export default function Header({ isLoggedIn }: HeaderProps) {
       <Link href="/appointments" className={isActive("/appointments")}>
         Appointments
       </Link>
-      <Link href="/health-blog" className={isActive("/health-blog")}>
-        Health Blog
-      </Link>
       <Link href="/reviews" className={isActive("/reviews")}>
         Reviews
+      </Link>
+      <Link href="/help" className={isActive("/help")}>
+        Help
       </Link>
     </>
   );

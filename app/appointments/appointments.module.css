@@ -15,7 +15,7 @@
 }
 
 .searchBar::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -20px;
   left: 50%;
@@ -124,7 +124,8 @@
   gap: 4px;
 }
 
-.filterTitle h3, .filterTitle span {
+.filterTitle h3,
+.filterTitle span {
   font-size: 1rem;
   color: #1a1a1a;
   margin: 0;
@@ -135,7 +136,8 @@
   gap: 8px;
 }
 
-.resetButton, .applyButton {
+.resetButton,
+.applyButton {
   font-size: 0.875rem;
   cursor: pointer;
 }
@@ -195,7 +197,7 @@
     width: 100%;
     margin-bottom: 1.5rem;
   }
-  
+
   .filterSection {
     margin-bottom: 1rem;
     padding-bottom: 1rem;

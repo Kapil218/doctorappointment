@@ -15,7 +15,6 @@
 }
 
 .title {
-  font-family: 'Montserrat', sans-serif;
   font-size: 64px;
   font-weight: 600;
   color: white;
@@ -24,7 +23,6 @@
 }
 
 .description {
-  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
@@ -33,7 +31,6 @@
 }
 
 .getStartedButton {
-  font-family: 'Montserrat', sans-serif;
   background-color: white;
   color: rgba(28, 74, 42, 1);
   border: none;
@@ -86,4 +83,4 @@
   .description {
     font-size: 16px;
   }
-} 
+}
